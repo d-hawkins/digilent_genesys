@@ -4,7 +4,7 @@
 
 ### Introduction
 
-This repo contains design examples for the Digilent Genesys board. The Digilent Genesys board contains a Xilinx Virtex-5 SX50T. The designs were implemented using the Xilinx ISE 14.7 Virtual Machine (see *Resources*).
+This repo contains design examples for the Digilent Genesys board. The Digilent Genesys board contains a Xilinx Virtex-5 LX50T. The designs were implemented using the Xilinx ISE 14.7 Virtual Machine (see *Resources*).
 
 Developing designs targeting the Xilinx Virtex-5 series remains useful, as the series includes the radiation-tolerant Virtex-5QV device. The Virtex-5QV is used in space applications (and requires the use of a different development Virtual Machine).
 
