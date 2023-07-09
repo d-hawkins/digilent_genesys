@@ -18,7 +18,7 @@ Directory           | Contents
 --------------------|-----------
 doc                 | Analysis documentation
 designs             | Example designs
-refs                | Reference documentation
+references          | Reference documentation
 
 ### Resources
 
