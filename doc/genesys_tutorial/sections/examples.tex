@@ -1,0 +1,124 @@
+% =============================================================================
+\section{Examples}
+% =============================================================================
+%
+Xilinx ISE 14.7 supports Verilog and VHDL, and does not support SystemVerilog.
+The example designs are all written in VHDL. Virtex-5 designs can be developed
+using SystemVerilog, however the code must be synthesized to EDIF using a 
+synthesis tool like Synopsys Synplify, and then the EDIF passed to Xilinx ISE 
+for place-and-route and bitstream generation.
+
+% -----------------------------------------------------------------------------
+\subsection{Blinky LEDs}
+% -----------------------------------------------------------------------------
+%
+The first design that is useful to create on a development kit is a blinky
+LEDs design. This design helps confirm the presence of a clock, and correct
+pin assignments.
+%
+Table~\ref{tab:blinky_pins} shows the schematic net names for the clocks and
+the LEDs. The blinky LED design will use the 100MHz clock on GLK0.
+%
+This section walks through the manual implementation of the blinky design, 
+and then the design is scripted for easier regeneration.
+
+The Virtex-5 Blinky design is generated as follows;
+%
+\begin{enumerate}
+\item Start the Xilinx ISE 14.7 VM and map the shared drive.
+\item Start Xilinx ISE 14.7.
+% -------------------------
+\item Create a new project.
+% -------------------------
+
+Select \emph{File$\rightarrow$New Project}
+
+In the \emph{Create New Project} dialog, enter:
+%
+\begin{itemize}
+\item Name: genesys
+\item Location: /mnt/c/github/digilent\_genesys/designs/blinky/build
+\item Working Directory: /mnt/c/github/digilent\_genesys/designs/blinky/build
+\end{itemize}
+%
+and then click \emph{Next}.
+
+In the \emph{Project Settings} dialog, make the following changes:
+%
+\begin{itemize}
+\item Family: Virtex5
+\item Device: XC5VLX50T
+\item Package: FF1136
+\item Speed: -1
+\item Preferred Language: VHDL
+\item VHDL Source Analysis Standard: VHDL-200X
+\end{itemize}
+%
+and then click \emph{Next}, and then \emph{Finish}.
+
+% -------------------------------
+\item Add the blinky source code.
+% -------------------------------
+\begin{itemize}
+\item Select \emph{Project$\rightarrow$Add Source}
+\item Add the top-level source file \verb+designs/blinky/src/genesys.vhd+. 
+\end{itemize}
+
+% -------------------------------
+\item Synthesize and Implement the design.
+% -------------------------------
+
+Click the green run button to run \verb+Synthesis - XST+ and \verb+Implement Design+.
+
+If implementation fails with the error message:
+%
+\begin{quote}
+\texttt{\textcolor{magenta}{ERROR}:Map:258 - A problem was encountered 
+attempting to get the license\newline for this architecture.}
+\end{quote}
+%
+Then check the Xilinx ISE license manager settings.
+
+\end{enumerate}
+
+
+
+% -----------------------------------------------------------------------------
+% Blinky LEDs pin constraints
+% -----------------------------------------------------------------------------
+%
+\begin{table}[t]
+\caption{Digilent Genesys Blinky LEDs pin constraints.}
+\label{tab:blinky_pins}
+\begin{center}
+\begin{tabular}{|l||c|c|c|c|c|c|}
+\hline
+Net Name       & Pin & Bank & Voltage & I/O Standard & Drive & Slew\\
+\hline\hline
+&&&&&&\\
+\verb+GCLK0+   & AG18 &   4 & 3.3V & LVCMOS3V3 &&\\
+&&&&&&\\
+\verb+GCLK2+   & AE13 &   2 & 3.3V & LVCMOS3V3 &&\\
+&&&&&&\\
+\verb+GCLK4_P+ & J14  &   3 & 2.5V & LVDS &&\\
+\verb+GCLK4_N+ & H13  &   3 & 2.5V & LVDS &&\\
+&&&&&&\\
+\verb+GCLK5_P+ & H19  &   3 & 3.3V & LVDS &&\\
+\verb+GCLK5_n+ & H20  &   3 & 3.3V & LVDS &&\\
+&&&&&&\\
+\verb+GCLKS+   & AH15 &   4 & 3.3V & LVCMOS3V3 &&\\
+&&&&&&\\
+\verb+LD[0]+   & AG8  &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[1]+   & AH8  &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[2]+   & AH9  &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[3]+   & AG10 &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[4]+   & AH10 &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[5]+   & AG11 &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[6]+   & AF11 &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+\verb+LD[7]+   & AE11 &  22 & 3.3V & LVCMOS3V3 & 4mA & SLOW\\
+&&&&&&\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+% -----------------------------------------------------------------------------

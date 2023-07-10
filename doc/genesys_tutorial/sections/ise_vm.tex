@@ -1,0 +1,231 @@
+% =============================================================================
+\section{Xilinx ISE 14.7 Virtual Machine Setup}
+% =============================================================================
+%
+The Xilinx instructions for installing the ISE 14.7 Virtual Machine (VM) can
+be found in UG1227 \emph{ISE 14.7 VM for Windows 10 User Guide}~\cite{Xilinx_UG1227_2020}.
+The following instructions \emph{do not} match the Xilinx installation guide
+exactly.
+%
+\begin{enumerate}
+\item \textbf{Install Oracle VirtualBox}
+
+Oracle VirtualBox can be downloaded from
+\href{https://www.virtualbox.org}{https://www.virtualbox.org}.
+
+Download and install VirtualBox. Then use \emph{File$\rightarrow$Check for Updates},
+and download and install the latest Extension Pack.
+VirtualBox version 7.0.8 was the latest version on 7/8/2024. 
+
+The Xilinx ISE 14.7 VM was also used successfully under VirtualBox version 6.1.40.
+Xilinx UG1227 indicates the VM was originally developed using VirtualBox 5.2
+(p11~\cite{Xilinx_UG1227_2020}).
+
+\item \textbf{Extract the ISE 14.7 Virtual Machine Image}
+
+This is the step where these instructions differ from Xilinx UG1227. The Xilinx
+recommended installation method includes Windows 10 wrapper applications that 
+offer no real benefit to users already familiar with VirtualBox and VMs. 
+Rather than use the Xilinx installation method, this step extracts the VM from 
+within the Xilinx zip file, and imports it directly into VirtualBox.
+
+\begin{enumerate}
+\item Unzip the 15.5GB file \verb+Xilinx_ISE_14.7_Win10_14.7_VM_0213_1.zip+
+\newline 
+The zip file can be unzipped onto a USB drive (eg., a 1TB Samsung T7 SSD).
+Unzipping takes a few minutes.
+\item The Open Virtualization Archive (OVA) is located in the unzipped directory
+\newline
+\verb+Xilinx_ISE_14.7_Win10_14.7_VM_0213_1\ova\14.7_VM.ova+
+\item Start VirtualBox
+\item Use VirtualBox \emph{File$\rightarrow$Import Appliance} to import the OVA file.
+\item The default VM name is \verb+ISE_14.7_VM_base+. Rename it \verb+ISE_14.7_VM+.
+\item (Optional) Change the \emph{Machine Base Folder}. The imported VM requires 39.7GB. 
+The machine base folder can be located on an external USB SSD. The VM is imported 
+into the folder \verb+ISE_14.7_VM+, so the machine base folder should not 
+include the VM name.
+\item Click \emph{Finish} to import the VM. Importing takes a few minutes.
+\item The VirtualBox then displays a new \verb+ISE_14.7_VM+ entry, with the
+virtual machine in the \verb+Powered Off+ state.
+\end{enumerate}
+%
+\item \textbf{Configure the Virtual Machine Settings}
+%
+\begin{enumerate}
+\item Click on the VirtualBox \emph{Settings} button to access the VM settings.
+\item The \emph{System}, \emph{Motherboard}, settings show the VM is configured
+for 6144MB. Increase this if possible, eg., on a 64GB machine, allocate 32GB.
+\item The \emph{System}, \emph{Processor}, settings show the VM is configured
+for 1 CPU. \emph{Do not increase the number of CPUs} as the VM will hang on
+boot (see the note below). 
+\item The \emph{Display}, \emph{Screen}, settings show the VM display controller
+is set to VBoxVGA with 3D acceleration disabled. There is a warning message at
+the bottom of the display indicating \verb+Invalid settings detected+, and clicking
+on the warning displays a message indicating the screen setting is not the 
+recommended VMSVGA. \emph{Do not change the display setting.}
+\item The \emph{Network}, \emph{Adapter 1}, settings show the VM is configured
+for the \verb+Host-only Adapter+. Depending on your needs, this may need to be
+changed. UG1227 has additional details.
+\item The \emph{USB} settings show the VM is configured to use USB 1.1.
+Change this to USB 2.0.
+\end{enumerate}
+%
+\newpage
+\item \textbf{Configure Oracle Linux}
+%
+\begin{enumerate}
+\item Click on the VirtualBox \emph{Start} button to boot the ISE 14.7 VM.
+\item The GUI displays a red progress bar on the bottom-left side, and the
+red text\newline \textcolor{red}{\texttt{Oracle Linux Server 6.4}} on the bottom-right side.
+Booting the VM takes less than a minute. The red progress bar and text eventually turn white,
+and then the Linux graphical desktop appears.
+
+\textcolor{magenta}{This is where the VM hangs if the VM is configured for more than 1 CPU.}
+
+\item Add a Terminal to the top-panel of the Linux desktop by using the mouse to navigate
+to (but do not left-mouse-click) \emph{Applications$\rightarrow$System Tools$\rightarrow$Terminal}, 
+then right-mouse-click, and select \emph{Add this launcher to panel}.
+
+\item Click on the Terminal to start it, and then investigate the operating system settings:
+%
+\begin{verbatim}
+[ise@localhost ~]$ cat /etc/issue
+Oracle Linux Server release 6.4
+Kernel \r on an \m
+
+[ise@localhost ~]$ cat /etc/redhat-release 
+Red Hat Enterprise Linux Server release 6.4 (Santiago)
+
+[ise@localhost ~]$ uname -a
+Linux localhost.localdomain 2.6.32-358.el6.x86_64 #1 SMP Fri Feb 22 
+13:35:02 PST 2013 x86_64 x86_64 x86_64 GNU/Linux
+\end{verbatim}
+%$
+The terminal output shows that Oracle Linux Server 6.4 is a release based on 
+Red Hat Enterprise Linux (RHEL) release 6.4, and that the Linux kernel is 
+version 2.6 from 2013.
+
+The terminal output also shows the default user name is \verb+ise+ and the default 
+machine name is \verb+localhost+.
+
+\item Update the VirtualBox Guest Additions used in the Oracle Linux VM.
+\begin{itemize}
+\item Select the VirtualBox menu option \emph{Devices$\rightarrow$Insert 
+Guest Additions CD image}.
+\item A CD image appears on the Linux desktop with the name \verb+VBox_GAs_7.0.8+\newline
+(the suffix is based on the VirtualBox version). 
+\item Click in the VM and the CD autorun dialog appears.
+\item Click \emph{Ok}, and then \emph{Run}.
+\item Enter the root password \verb+xilinx+ to run the Guest Additions installer.
+\item Press \verb+Return+ in the terminal to close it once
+the installation completes.
+\item Select the CD image, right-mouse-click, and select \emph{Eject}.
+\item Type the command \verb+sudo shutdown -h now+ to shutdown the VM
+\item Re-start the VM
+\end{itemize}
+%
+This VM shutdown and re-start is needed for the VM to use the new Guest Additions.
+
+\item Set the Linux Time Zone per UG1227 instructions (see pp13-14~\cite{Xilinx_UG1227_2020}).
+
+The Linux clock on the top-right should update to match your host time.
+
+\item Set the display resolution.
+
+Xilinx recommends a minimum screen resolution of 1280 $\times$ 1024 (p9~\cite{Xilinx_UG1227_2020}).
+
+From the menu at the top of the Linux desktop, select \emph{System$\rightarrow$Preferences$\rightarrow$Display}. Select a screen resolution from the pull-down menu. If you resize the VM window,
+a new (non-standard resolution) entry will appear in the menu, select that entry.
+
+\newpage
+\item Change the host name
+
+
+\begin{verbatim}
+[ise@localhost ~]$ sudo su
+[ise@localhost ~]# vi /etc/sysconfig/network
+NETWORKING=yes
+HOSTNAME=localhost.localdomain
+
+# Change the last line to
+HOSTNAME=xilinx-ise-14_7-vm
+	
+[ise@localhost ~]# service network restart
+
+# Fails with an eth0 error
+
+[ise@localhost ~]# shutdown -h now
+\end{verbatim}
+%$
+\textcolor{red}{\bf TODO: Understand why network restart did not work!}
+
+Restart the VM and the terminal prompt changes to:
+%
+\begin{verbatim}
+[ise@xilinx-ise-14_7-vm ~]$
+\end{verbatim}
+%$
+Note that the host name must not include a period, since periods are used for domain names.
+This is why the underscore was used in the ISE version number.
+
+%\newpage
+\item Change the default user name. \textcolor{red}{\bf WORK-IN-PROGRESS!}
+
+The default user \verb+ise+ can be renamed, but the user \verb+ise+ cannot be logged in
+when this is done. The VM can be started as the root user as follows:
+%
+\begin{itemize}
+\item Shut down the VM
+\item Interrupt the boot process by clicking in the VM window and pressing a key to
+enter the GRUB boot menu
+\item Type \verb+e+ to edit the boot command
+\item Navigate down to the kernel entry and type \verb+e+ to edit the kernel command line
+\item Delete the word \verb+quiet+ and enter the word \verb+single+ (for single-user boot)
+\item Hit enter to save the changes, and then \verb+b+ to boot with the new kernel command line
+\item Linux will boot to a text command line with the root prompt
+\item Rename the user and home directories to your own name, eg.,
+%
+\begin{verbatim}
+[ise@localhost ~]$ sudo su
+[ise@localhost ~]# usermod -l dhawkins ise
+[ise@localhost ~]# ls /home
+ise
+[ise@localhost ~]# usermod -d /home/dhawkins -m dhawkins
+[ise@localhost ~]# ls /home
+dhawkins
+[ise@localhost ~]# shutdown -h now
+\end{verbatim}
+%$
+\end{itemize}
+%
+Restart the VM and the system hangs after the red progress bar completes.
+
+Using these same commands to rename \verb+dhawkins+ and the home directory back to those of \verb+ise+ restores booting into Linux.
+
+\item \textcolor{blue}{\bf Setup shared drive}
+
+Configure the VM for shared access to \verb+C:/+ (\verb+C_DRIVE+) and then mount it within
+the VM to \verb+/mnt/c/+. This mounting scheme will be familiar to users of Windows 
+Subsystem for Linux (WSL).
+
+\end{enumerate}
+
+
+Did I get the Digilent driver to work? Did I have to install Adept into the VM?
+
+p22: USB - the VM is setup for Xilinx and Digilent cables.
+
+The Genesys USB port appears as "Xilinx USB Cable" and it is a USB 2.0 device.
+
+Didn't the Genesys User Guide say there were two USB programmer settings? How do I change devices?
+
+Actually, start Vivado and see if the hardware manager recognizes the cable.
+
+Vivado connects to \verb+localhost/xilinx_tcf/Xilinx/00000000000000+, and it has a
+device property of jsn-DLC9LP-00000000000000 operating at 6MHz. 
+
+The JTAG programmer finds a single device, xc5vlx50t with a JTAG IDCODE of 0xC2A96093.
+
+
+\end{enumerate}
+

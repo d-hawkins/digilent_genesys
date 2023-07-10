@@ -1,0 +1,52 @@
+% =============================================================================
+\section{Introduction}
+% =============================================================================
+%
+
+This tutorial contains example designs for the Digilent Genesys 
+board~\cite{Digilent_Genesys_RM_2016,Digilent_Genesys_Sch_2010}.
+Figure~\ref{fig:digilent_genesys} shows a photo of the board.
+%
+The Digilent Genesys board contains the Xilinx Virtex-5 LX50T device 
+(XC5VLX50T)~\cite{Xilinx_DS100_2015} which contains: 7,200 slices, with each 
+slice containing four 4-input lookup tables (LUTs) and four registers, for a 
+total of 28,800 $\times$ 4-LUTs and 28,800 $\times$ FFs, 
+48 $\times$ DSP blocks, and 60 $\times$ 36kbit Block 
+RAM\footnote{The LX50T contains transceivers, but they are not supported 
+(not powered) on the Genesys board.}.
+%
+This tutorial shows how to setup the Xilinx ISE 14.7 Virtual 
+Machine design tools, and provides example designs.
+
+% -----------------------------------------------------------------------------
+% Digilent Genesys Board
+% -----------------------------------------------------------------------------
+%
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]
+    {figures/digilent-genesys.png}\\
+  \end{center}
+  \caption{Digilent Genesys board.}
+  \label{fig:digilent_genesys}
+\end{figure}
+% -----------------------------------------------------------------------------
+
+%\clearpage
+% =============================================================================
+\section{Resources}
+% =============================================================================
+
+\begin{itemize}
+\item Xilinx ISE 14.7 Virtual Machine (VM) download page
+
+% Xilinx Download page, ISE Archive link
+\href{https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive-ise.html}
+{https://www.xilinx.com/support/download.html}
+
+\item Digilent Genesys documentation and examples
+
+\href{https://digilent.com/reference/programmable-logic/genesys/start}
+{https://digilent.com/reference/programmable-logic/genesys/start}
+
+\end{itemize}
